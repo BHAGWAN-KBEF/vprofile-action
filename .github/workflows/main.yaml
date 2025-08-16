@@ -1,4 +1,4 @@
-name: vprofile CI/CD
+name: vprofile actions
 
 on:
   push:
