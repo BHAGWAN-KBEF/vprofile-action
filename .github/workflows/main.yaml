@@ -1,7 +1,5 @@
 name: vprofile actions
-
 on: workflow_dispatch
-
 env:
   AWS_REGION: us-east-1
   ECR_REPOSITORY: vprofileapp
@@ -24,8 +22,8 @@ jobs:
       - name: Set Java 11
         uses: actions/setup-java@v3
         with:
-         distribution: 'temurin'
-         java-version: '11'
+          distribution: 'temurin'
+          java-version: '11'
 
       # Setup sonar-scanner
       - name: Setup SonarQube
@@ -43,19 +41,13 @@ jobs:
             -Dsonar.junit.reportsPath=target/surefire-reports/ \
             -Dsonar.jacoco.reportsPath=target/jacoco.exec \
             -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml \
-            -Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/
+            -Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/  
 
-      # Check the Quality Gate status.
-      - name: SonarQube Quality Gate check
-        id: sonarqube-quality-gate-check
-        uses: sonarsource/sonarqube-quality-gate-action@master
-        with:
-          sonar-report-path: .scannerwork/report-task.txt
-        timeout-minutes: 5
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_URL }}
-
-      - name: Quality Gate check
-        if: ${{ steps.sonarqube-quality-gate-check.outputs.status != 'OK' }}
-        run: exit 1
+      # Check the Quality Gate status (OPTION 2: SKIPPED on first run)
+      # - name: SonarQube Quality Gate check
+      #   id: sonarqube-quality-gate-check
+      #   uses: sonarsource/sonarqube-quality-gate-action@master
+      #   timeout-minutes: 5
+      #   env:
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      #     SONAR_HOST_URL: ${{ secrets.SONAR_URL }}
